@@ -1,5 +1,8 @@
-. "$HOME/.cargo/env"
-. "/home/lukas/.local/share/bob/env/env.sh"
+# Cargo / Rust
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+
+# Bob (Neovim version manager) - Portable path
+[[ -f "$HOME/.local/share/bob/env/env.sh" ]] && . "$HOME/.local/share/bob/env/env.sh"
 
 # Ensure local binaries are preferred
 export PATH="$HOME/.local/bin:$PATH"

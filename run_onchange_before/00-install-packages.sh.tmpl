@@ -1,0 +1,44 @@
+#!/bin/bash
+set -e # Exit on error
+
+# --- 1. System Packages (Ubuntu/Debian) ---
+{{ if (or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian")) -}}
+echo "Ubuntu/Debian detected. Running apt update..."
+# Use -qq for "quite quiet" output in devcontainers
+sudo apt-get update -qq
+sudo apt-get install -y build-essential clang libclang-dev unzip curl
+{{ end -}}
+
+# --- 2. Install Rust (rustup) ---
+if ! command -v rustup &> /dev/null; then
+    echo "Installing Rust..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    source "$HOME/.cargo/env"
+else
+    [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+fi
+
+# --- 3. Use Cargo to install Bob & Tree-sitter ---
+if command -v cargo &> /dev/null; then
+    # Install Bob if missing
+    if ! command -v bob &> /dev/null; then
+        echo "Installing Bob (Neovim Manager)..."
+        cargo install bob-nvim
+    fi
+
+    # Install Tree-sitter if missing
+    if ! command -v tree-sitter &> /dev/null; then
+        echo "Installing Tree-sitter CLI..."
+        cargo install tree-sitter-cli
+    fi
+fi
+
+# --- 4. Use Bob to install Neovim ---
+if command -v bob &> /dev/null; then
+    echo "Installing Neovim stable via Bob..."
+    bob use stable
+
+    # Optional: Ensure the bob proxy is initialized
+    # This makes sure the 'nvim' command points to the version bob installed
+    export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+fi
