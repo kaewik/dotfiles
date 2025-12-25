@@ -1,0 +1,5 @@
+. "$HOME/.cargo/env"
+. "/home/lukas/.local/share/bob/env/env.sh"
+
+# Ensure local binaries are preferred
+export PATH="$HOME/.local/bin:$PATH"
