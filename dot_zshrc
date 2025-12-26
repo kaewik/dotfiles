@@ -129,3 +129,5 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+# Source work related zshrc
+[[ -f "$HOME/.zshrc_work" ]] && source "$HOME/.zshrc_work"
