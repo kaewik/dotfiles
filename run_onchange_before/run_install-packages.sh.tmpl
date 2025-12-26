@@ -45,6 +45,13 @@ if command -v cargo &> /dev/null; then
     fi
 fi
 
+# --- Oh My Zsh ---
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "Installing Oh My Zsh..."
+    # Keep it non-interactive
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+
 # --- Use Bob to install Neovim ---
 if command -v bob &> /dev/null; then
     echo "Installing Neovim stable via Bob..."
