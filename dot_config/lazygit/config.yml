@@ -1,2 +1,5 @@
 gui:
   screenMode: full
+git:
+  pagers:
+    - pager: delta

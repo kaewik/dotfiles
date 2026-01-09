@@ -43,6 +43,12 @@ if command -v cargo &> /dev/null; then
         echo "Installing fd-find..."
         cargo install fd-find
     fi
+
+    # Install git-delta if missing
+    if ! command -v delta &> /dev/null; then
+        echo "Installing git-delta..."
+        cargo install git-delta
+    fi
 fi
 
 # --- Oh My Zsh ---
