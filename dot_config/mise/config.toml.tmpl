@@ -8,11 +8,20 @@ rust = "latest"
 "cargo:fd-find" = "latest"
 "cargo:git-delta" = "latest"
 "cargo:tree-sitter-cli" = "latest"
-node = "lts"
 "npm:@devcontainers/cli" = "latest"
 fzf = "latest"
+
+{{- if not (lookPath "node") }}
+node = "lts"
+{{- end }}
+
+{{- if not (lookPath "python") }}
 python = "3.12"
+{{- end }}
+
+{{- if not (lookPath "kubectl") }}
 kubectl = "latest"
+{{- end }}
 
 [settings]
 # Automatically install missing tools on shell start
