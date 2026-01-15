@@ -1,7 +1,7 @@
 [tools]
+"asdf:neovim" = "ref:stable"
 ripgrep = "14.1.0"
 rust = "latest"
-"cargo:bob-nvim" = "latest"
 "cargo:fd-find" = "latest"
 "cargo:git-delta" = "latest"
 "cargo:tree-sitter-cli" = "latest"
