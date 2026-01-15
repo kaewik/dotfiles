@@ -1,3 +1,6 @@
+[env]
+MAKEFLAGS = "-j$(nproc)"
+
 [tools]
 "asdf:neovim" = "ref:stable"
 ripgrep = "14.1.0"

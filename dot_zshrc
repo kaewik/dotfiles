@@ -117,4 +117,3 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 eval "$(mise activate zsh)"
 
-export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
