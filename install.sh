@@ -42,4 +42,4 @@ fi
 echo "Applying dotfiles..."
 # We use --force to overwrite existing .zshrc files 
 # We use -v (verbose) so you can see your scripts running!
-chezmoi apply -v
+chezmoi apply

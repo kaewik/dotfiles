@@ -5,8 +5,8 @@
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate bash)"
 
-mkdir -p ~/.oh-my-zsh/completions
+mkdir -p ~/.zsh-custom/completions
 if command -v kubectl >/dev/null 2>&1; then
-    kubectl completion zsh > ~/.oh-my-zsh/completions/_kubectl
+    kubectl completion zsh > ~/.zsh-custom/completions/_kubectl
     echo "Kubectl completions updated."
 fi
