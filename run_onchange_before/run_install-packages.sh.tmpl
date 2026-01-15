@@ -17,7 +17,7 @@ if ! command -v mise &> /dev/null; then
     curl -fsSL https://mise.jdx.dev/install.sh > /tmp/install_mise.sh
     sh /tmp/install_mise.sh
     rm /tmp/install_mise.sh
-    
+
     # Ensure it's in the PATH for the rest of this script
     export PATH="$HOME/.local/bin:$PATH"
 fi
@@ -26,6 +26,7 @@ fi
 if ! command -v rustup &> /dev/null; then
     echo "Installing Rust..."
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    source "$HOME/.cargo/env"
 fi
 
 # --- 4. Mise Install ---
