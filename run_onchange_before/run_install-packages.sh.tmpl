@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# --- 1. System Packages (Ubuntu/Debian) ---
+# --- System Packages (Ubuntu/Debian) ---
 {{ if (or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian")) -}}
 echo "Ubuntu/Debian detected. Running bootstrap..."
 sudo apt-get update -qq
@@ -10,7 +10,7 @@ sudo apt-get update -qq
 sudo apt-get install -y build-essential clang libclang-dev unzip curl
 {{ end -}}
 
-# --- 2. Install Mise (The Core) ---
+# --- Install Mise (The Core) ---
 if ! command -v mise &> /dev/null; then
     echo "Installing mise..."
     # Download to a temporary file first to avoid pipe syntax errors
@@ -22,19 +22,12 @@ if ! command -v mise &> /dev/null; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
-# --- 3. Install Rust (Optional) ---
-if ! command -v rustup &> /dev/null; then
-    echo "Installing Rust..."
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    source "$HOME/.cargo/env"
-fi
-
-# --- 4. Mise Install ---
+# --- Mise Install ---
 # This command looks at your .config/mise/config.toml and installs everything (nvim, rg, fd, etc.)
 echo "Installing tools via mise..."
 mise install -y
 
-# --- 5. Oh My Zsh & P10k ---
+# --- Oh My Zsh & P10k ---
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "Installing Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
