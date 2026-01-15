@@ -27,17 +27,5 @@ fi
 echo "Installing tools via mise..."
 mise install -y
 
-# --- Oh My Zsh & P10k ---
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "Installing Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-fi
-
-P10K_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-if [ ! -d "$P10K_DIR" ]; then
-    echo "Installing Powerlevel10k..."
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K_DIR"
-fi
-
 # Update font cache
 fc-cache -fv
