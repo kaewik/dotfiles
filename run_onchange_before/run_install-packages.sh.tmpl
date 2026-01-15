@@ -27,5 +27,9 @@ fi
 echo "Installing tools via mise..."
 mise install -y
 
+export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"
+echo "Installing Neovim via bob..."
+bob use stable
+
 # Update font cache
 fc-cache -fv
