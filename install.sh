@@ -27,9 +27,14 @@ fi
 if [ -d "$REPO_DIR/.git" ] && [ -n "$DOTFILES_BRANCH" ]; then
     echo "Checking out branch: $DOTFILES_BRANCH"
     cd "$REPO_DIR"
-    # Falls es ein Shallow-Clone ist, holen wir den Branch explizit
+
     git fetch origin "$DOTFILES_BRANCH" --depth=1
-    git checkout "$DOTFILES_BRANCH"
+
+    if git checkout -B "$DOTFILES_BRANCH" FETCH_HEAD; then
+        echo "✅ Successfully switched to $DOTFILES_BRANCH"
+    else
+        echo "❌ Failed to switch to $DOTFILES_BRANCH"
+    fi
     cd - > /dev/null
 fi
 
