@@ -1,19 +1,19 @@
 #!/bin/bash
 set -e
 
-# 1. Paths
+# Paths
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 CHEZMOI_DIR="$HOME/.local/share/chezmoi"
 BIN_DIR="$HOME/.local/bin"
 
-# 2. Install chezmoi if missing
+# Install chezmoi if missing
 if ! command -v chezmoi >/dev/null 2>&1; then
   mkdir -p "$BIN_DIR"
   sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$BIN_DIR"
   export PATH="$BIN_DIR:$PATH"
 fi
 
-# 3. Force the connection
+# Force the connection
 # If the repo isn't where chezmoi expects it, symlink it.
 if [ "$REPO_DIR" != "$CHEZMOI_DIR" ]; then
     echo "Connecting $REPO_DIR to Chezmoi..."
@@ -23,7 +23,17 @@ if [ "$REPO_DIR" != "$CHEZMOI_DIR" ]; then
     ln -sf "$REPO_DIR" "$CHEZMOI_DIR"
 fi
 
-# 4. Apply
+# Make sure the DOTFILES_BRANCH variable is used if set
+if [ -d "$REPO_DIR/.git" ] && [ -n "$DOTFILES_BRANCH" ]; then
+    echo "Checking out branch: $DOTFILES_BRANCH"
+    cd "$REPO_DIR"
+    # Falls es ein Shallow-Clone ist, holen wir den Branch explizit
+    git fetch origin "$DOTFILES_BRANCH" --depth=1
+    git checkout "$DOTFILES_BRANCH"
+    cd - > /dev/null
+fi
+
+# Apply
 echo "Applying dotfiles..."
 # We use --force to overwrite existing .zshrc files 
 # We use -v (verbose) so you can see your scripts running!
