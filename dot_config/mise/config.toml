@@ -1,0 +1,15 @@
+[tools]
+"github:neovim/neovim" = "stable"
+ripgrep = "14.1.0"
+"cargo:fd-find" = "latest"
+"cargo:git-delta" = "latest"
+"cargo:tree-sitter-cli" = "latest"
+node = "lts"
+fzf = "latest"
+python = "3.12"
+
+[settings]
+# Automatically install missing tools on shell start
+asdf_compat = true
+jobs = 4
+

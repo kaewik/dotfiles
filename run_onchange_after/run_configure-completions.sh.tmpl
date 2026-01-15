@@ -1,0 +1,7 @@
+#!/bin/bash
+# hash: {{ lookPath "chezmoi" }}
+# Dieses Script läuft nur, wenn chezmoi aktualisiert wurde
+
+mkdir -p ~/.oh-my-zsh/completions
+chezmoi completion zsh > ~/.oh-my-zsh/completions/_chezmoi
+echo "Chezmoi completions updated."
