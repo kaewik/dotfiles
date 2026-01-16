@@ -23,6 +23,11 @@ python = "3.12"
 kubectl = "latest"
 {{- end }}
 
+{{- if not (lookPath "tmux") }}
+tmux = "latest"
+{{- end }}
+overmind = "latest"
+
 [settings]
 # Automatically install missing tools on shell start
 asdf_compat = true
