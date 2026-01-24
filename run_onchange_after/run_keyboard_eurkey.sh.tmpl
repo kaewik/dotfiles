@@ -1,0 +1,34 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+# Target version
+TAG="v1.3"
+TARGET_DIR="$HOME/Library/Keyboard Layouts/"
+BUNDLE_DIR="$TARGET_DIR/EurKey-macOS.bundle/"
+TEMP_ZIP="/tmp/eurkey_repo.zip"
+TEMP_EXTRACT="/tmp/eurkey_extract"
+
+if [ ! -d "$BUNDLE_DIR" ]; then
+    echo "Downloading EurKEY-macOS $TAG..."
+
+    # Download the full repo zip for the specific tag
+    curl -L "https://github.com/felixfoertsch/EurKEY-macOS/archive/refs/tags/${TAG}.zip" -o "$TEMP_ZIP"
+
+    # Extract to a temp folder
+    mkdir -p "$TEMP_EXTRACT"
+    unzip -q "$TEMP_ZIP" -d "$TEMP_EXTRACT"
+
+    # Move contents to the destination
+    echo "Installing bundle to $TARGET_DIR..."
+    mkdir -p "$HOME/Library/Keyboard Layouts"
+    cp -R "$TEMP_EXTRACT"/* "$HOME/Library/Keyboard Layouts/"
+
+    # 4. Cleanup
+    rm -rf "$TEMP_ZIP" "$TEMP_EXTRACT"
+
+    echo "✅ EurKEY $TAG installed successfully."
+    echo "⚠️  You must restart or log out for macOS to register the layout."
+else
+    echo "EurKEY already exists at $TARGET_DIR."
+fi
+{{ end -}}
