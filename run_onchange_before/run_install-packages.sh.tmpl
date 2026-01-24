@@ -2,12 +2,48 @@
 set -e
 
 # --- System Packages (Ubuntu/Debian) ---
-{{ if (or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian")) -}}
+{{ if hasKey .chezmoi.osRelease "id" -}}
+{{ if or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") -}}
 echo "Ubuntu/Debian detected. Running bootstrap..."
 sudo apt-get update -qq
 
 # Note: build-essential/clang for Neovim's Tree-sitter parsers
 sudo apt-get install -y build-essential clang libclang-dev unzip curl cmake
+{{ end -}}
+{{ end -}}
+
+# --- System Packages (macOS) ---
+{{ if eq .chezmoi.os "darwin" -}}
+echo "macOS detected. Running bootstrap..."
+
+# Ensure Homebrew is installed
+if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew not found. Installing..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    # Add brew to the current shell session path immediately
+    if [[ -f /opt/homebrew/bin/brew ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -f /usr/local/bin/brew ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+fi
+
+# Install build dependencies for mise tools (Tree-sitter)
+echo "Installing build dependencies via Homebrew..."
+brew install \
+    cmake \
+    ninja \
+    gettext \
+    curl \
+    unzip \
+    git
+
+# Ensure Xcode Command Line Tools are active (for clang/make)
+if ! xcode-select -p >/dev/null 2>&1; then
+    echo "Installing Xcode Command Line Tools..."
+    xcode-select --install
+fi
 {{ end -}}
 
 # --- Install Mise (The Core) ---

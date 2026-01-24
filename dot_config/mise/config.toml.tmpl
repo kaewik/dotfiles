@@ -1,33 +1,30 @@
-[env]
-MAKEFLAGS = "-j$(nproc)"
+{{- /* Define Default Packages */ -}}
+{{- $tools := dict
+    "node" "latest"
+    "python" "latest"
+    "ripgrep" "latest"
+    "neovim" "stable"
+    "rust" "latest"
+    "cargo:fd-find" "latest"
+    "cargo:git-delta" "latest"
+    "cargo:tree-sitter-cli" "latest"
+    "tmux" "latest"
+    "overmind" "latest"
+    "lazygit" "latest"
+-}}
+
+{{- /* Merge with Overrides from chezmoi.toml data */ -}}
+{{- if hasKey . "mise_tool_overrides" -}}
+  {{- $tools = merge $tools .mise_tool_overrides -}}
+{{- end -}}
 
 [tools]
-"asdf:neovim" = "ref:stable"
-ripgrep = "14.1.0"
-rust = "latest"
-"cargo:fd-find" = "latest"
-"cargo:git-delta" = "latest"
-"cargo:tree-sitter-cli" = "latest"
-"npm:@devcontainers/cli" = "latest"
-fzf = "latest"
-"npm:@github/copilot" = "latest"
+{{ range $name, $version := $tools -}}
+{{ $name | quote }} = {{ $version | quote }}
+{{ end -}}
 
-{{- if not (lookPath "node") }}
-node = "lts"
-{{- end }}
-
-{{- if not (lookPath "python") }}
-python = "3.12"
-{{- end }}
-
-{{- if not (lookPath "kubectl") }}
-kubectl = "latest"
-{{- end }}
-
-{{- if not (lookPath "tmux") }}
-tmux = "latest"
-{{- end }}
-overmind = "latest"
+[env]
+MAKEFLAGS = "-j$(nproc)"
 
 [settings]
 # Automatically install missing tools on shell start
