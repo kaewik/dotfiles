@@ -1,0 +1,21 @@
+{{- if (eq .chezmoi.os "linux") -}}
+#!/bin/bash
+
+ZSH_PATH=$(which zsh)
+CURRENT_USER={{ .chezmoi.username | quote }}
+
+if [ -z "$ZSH_PATH" ]; then
+    echo "Zsh not found. Skipping shell change."
+    exit 0
+fi
+
+if [[ "$SHELL" != "$ZSH_PATH" ]]; then
+    echo "Changing shell to $ZSH_PATH for user $CURRENT_USER..."
+
+    sudo chsh -s "$ZSH_PATH" "$CURRENT_USER"
+
+    echo "Shell changed. Please restart your session or container."
+else
+    echo "Shell is already set to zsh."
+fi
+{{- end -}}
