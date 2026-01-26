@@ -15,7 +15,7 @@
 
 {{- /* Merge with Overrides from chezmoi.toml data */ -}}
 {{- if hasKey . "mise_tool_overrides" -}}
-  {{- $tools = merge $tools .mise_tool_overrides -}}
+  {{- $tools = mergeOverwrite $tools .mise_tool_overrides -}}
 {{- end -}}
 
 [tools]
