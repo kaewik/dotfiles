@@ -20,8 +20,10 @@
 
 [tools]
 {{ range $name, $version := $tools -}}
+{{- if ne $version "" -}}
 {{ $name | quote }} = {{ $version | quote }}
 {{ end -}}
+{{- end -}}
 
 [env]
 MAKEFLAGS = "-j$(nproc)"
