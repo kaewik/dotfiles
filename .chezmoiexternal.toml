@@ -5,8 +5,9 @@
     stripComponents = 0
 
 [".oh-my-zsh"]
-    type = "git-repo"
-    url = "https://github.com/ohmyzsh/ohmyzsh.git"
+    type = "archive"
+    url = "https://github.com/ohmyzsh/ohmyzsh/archive/HEAD.tar.gz"
+    stripComponents = 1
     refreshPeriod = "168h"
 
 [".zsh-custom/themes/powerlevel10k"]
