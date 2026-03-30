@@ -1,14 +1,14 @@
 # 🚀 Dotfiles
 
-My personal setup for **WSL (Ubuntu)**, **Devcontainers (Debian)**, and **macOS (not supported yet)**. 
+My personal setup for **WSL (Ubuntu)**, **Devcontainers (Debian)**, and **macOS**. 
 Managed with [Chezmoi](https://www.chezmoi.io/).
 
 ## ✨ Highlights
 
 * **Shell:** Zsh with Oh My Zsh & Powerlevel10k.
-* **Editor:** Neovim (installed via **Bob** for easy version management).
-* **Search:** ```fzf``` (v0.25.1+), ```ripgrep``` (live grep), and ```fd``` (find).
-* **Languages:** Full Rust toolchain (via ```rustup```).
+* **Editor:** Neovim (installed via **Mise**).
+* **Search:** ```ripgrep``` (live grep) and ```fd``` (find).
+* **Languages:** Rust toolchain (via **Mise**).
 * **Fonts:** Hack Nerd Font (automatically handled via Chezmoi Externals).
 
 ---
@@ -24,13 +24,23 @@ sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply <your-github-userna
 *In a Devcontainer:* The repository is cloned, and ```install.sh``` automatically triggers the Chezmoi process.
 *Note*: Use the `--dotfiles-repository` flag with the Devcontainer CLI.
 
+#### Environment Variables
+
+| Variable | Description |
+| :--- | :--- |
+| `DOTFILES_BRANCH` | Checkout a specific branch before applying (triggers re-exec of `install.sh`) |
+| `DEVCONTAINER` | When set, generates chezmoi config with devcontainer-specific mise tool overrides |
+| `XDG_DATA_HOME` | Overrides the default data directory (`~/.local/share`). Respected by `install.sh`, chezmoi, mise, and neovim |
+| `XDG_CACHE_HOME` | Overrides the default cache directory (`~/.cache`) |
+| `HISTFILE` | Overrides where zsh writes shell history (`~/.zsh_history`) |
+
 ---
 
 ## 📂 What is Chezmoi?
 
 [Chezmoi](https://www.chezmoi.io/) is a dotfiles manager that creates a clear distinction between your **Source State** (the Git repo) and your **Target State** (your Home directory).
 
-Instead of editing files directly in your Home directory or creating manual symlinks, Chezmoi manages the "Source of Truth" in ```~/.local/share/chezmoi```.
+Instead of editing files directly in your Home directory or creating manual symlinks, Chezmoi manages the "Source of Truth" in ```${XDG_DATA_HOME:-~/.local/share}/chezmoi```.
 
 **The Advantage:** Chezmoi allows for templates (e.g., handling different paths for Mac vs. Linux) and ensures your configuration remains identical across all machines without manual path fixing.
 
@@ -79,17 +89,21 @@ This setup is configured to automatically source a file named ```~/.zshrc_work``
 
 ## 📦 Included Tools & Paths
 
-| Tool | Installation | Path / Info |
+| Tool | Installation | Info |
 | :--- | :--- | :--- |
-| **Rust/Cargo** | Rustup | ```~/.cargo/bin``` |
-| **Neovim** | Bob-Nvim | ```~/.local/share/bob/nvim-bin``` |
-| **FZF** | Git | Installed v0.25.1+ for full plugin compatibility |
-| **fd** | Apt/Cargo | Alias ```fd='fdfind```' is set automatically |
-| **Fonts** | Externals | Hack Nerd Font in ```~/.local/share/fonts``` |
+| **Neovim** | Mise | `neovim "stable"` |
+| **Rust** | Mise | `rust "latest"` |
+| **ripgrep** | Mise | Prebuilt binary via GitHub releases |
+| **fd** | Mise | Prebuilt binary via GitHub releases |
+| **delta** | Mise | Prebuilt binary via GitHub releases |
+| **tree-sitter** | Mise | Prebuilt binary via GitHub releases |
+| **tmux** | Mise | `tmux "latest"` |
+| **lazygit** | Mise | `lazygit "latest"` |
+| **Fonts** | Chezmoi Externals | Hack Nerd Font in ```~/.local/share/fonts``` |
 
 ---
 
 ### Helpful Commands
 * ```chezmoi managed```: Lists all files managed by Chezmoi.
 * ```chezmoi diff```: Shows the difference between the repo and your home directory.
-* ```bob use stable```: Switches to the latest stable Neovim version.
+* ```mise ls```: Lists all installed tools and their versions.
