@@ -3,7 +3,7 @@ set -e
 
 # Paths
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
-CHEZMOI_DIR="$HOME/.local/share/chezmoi"
+CHEZMOI_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/chezmoi"
 BIN_DIR="$HOME/.local/bin"
 
 # Install chezmoi if missing
