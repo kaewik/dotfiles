@@ -1,0 +1,10 @@
+{{- if env "DEVCONTAINER" }}
+[data.mise_tool_overrides]
+"npm:@github/copilot" = "latest"
+"node" = ""
+"python" = ""
+"tmux" = ""
+"lazygit" = ""
+"ripgrep" = "latest"
+"neovim" = "stable"
+{{- end }}
