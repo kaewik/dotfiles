@@ -38,8 +38,6 @@ if [ -d "$REPO_DIR/.git" ] && [ -n "$DOTFILES_BRANCH" ]; then
     cd - > /dev/null
 fi
 
-# Apply
+# Init (processes .chezmoi.toml.tmpl) and apply
 echo "Applying dotfiles..."
-# We use --force to overwrite existing .zshrc files 
-# We use -v (verbose) so you can see your scripts running!
-chezmoi apply
+chezmoi init --apply --force
