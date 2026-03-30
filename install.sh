@@ -1,8 +1,31 @@
 #!/bin/bash
 set -e
 
-# Paths
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Switch to the desired branch first, before any other logic runs.
+# exec replaces this process with the branch's install.sh so it runs from scratch.
+if [ -d "$REPO_DIR/.git" ] && [ -n "$DOTFILES_BRANCH" ]; then
+    CURRENT_BRANCH="$(git -C "$REPO_DIR" rev-parse --abbrev-ref HEAD)"
+
+    if [ "$CURRENT_BRANCH" != "$DOTFILES_BRANCH" ]; then
+        echo "Checking out branch: $DOTFILES_BRANCH"
+        cd "$REPO_DIR"
+
+        git fetch origin "$DOTFILES_BRANCH" --depth=1
+
+        if git checkout -B "$DOTFILES_BRANCH" FETCH_HEAD; then
+            echo "✅ Successfully switched to $DOTFILES_BRANCH"
+        else
+            echo "❌ Failed to switch to $DOTFILES_BRANCH"
+        fi
+        cd - > /dev/null
+
+        exec "$REPO_DIR/install.sh"
+    fi
+fi
+
+# Paths
 CHEZMOI_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/chezmoi"
 BIN_DIR="$HOME/.local/bin"
 
@@ -23,29 +46,9 @@ if [ "$REPO_DIR" != "$CHEZMOI_DIR" ]; then
     ln -sf "$REPO_DIR" "$CHEZMOI_DIR"
 fi
 
-# Switch to the desired branch if not already on it
-if [ -d "$REPO_DIR/.git" ] && [ -n "$DOTFILES_BRANCH" ]; then
-    CURRENT_BRANCH="$(git -C "$REPO_DIR" rev-parse --abbrev-ref HEAD)"
-
-    if [ "$CURRENT_BRANCH" != "$DOTFILES_BRANCH" ]; then
-        echo "Checking out branch: $DOTFILES_BRANCH"
-        cd "$REPO_DIR"
-
-        git fetch origin "$DOTFILES_BRANCH" --depth=1
-
-        if git checkout -B "$DOTFILES_BRANCH" FETCH_HEAD; then
-            echo "✅ Successfully switched to $DOTFILES_BRANCH"
-        else
-            echo "❌ Failed to switch to $DOTFILES_BRANCH"
-        fi
-        cd - > /dev/null
-
-        # Re-exec so the branch's install.sh runs instead of the one loaded in memory.
-        # exec replaces this process entirely — nothing after it executes.
-        exec "$REPO_DIR/install.sh"
-    fi
-fi
-
-# Init (processes .chezmoi.toml.tmpl) and apply
+# Init (processes .chezmoi.toml.tmpl) and apply.
+# Without --source, chezmoi creates its source symlink at $XDG_DATA_HOME/chezmoi
+# (e.g. on a persistent mount), leaving a dangling symlink on the host pointing
+# to a container-internal path. --source keeps the symlink at ~/.local/share/chezmoi.
 echo "Applying dotfiles..."
-chezmoi init --apply --force
+chezmoi init --apply --force --source "$CHEZMOI_DIR"
