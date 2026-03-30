@@ -36,6 +36,10 @@ if [ -d "$REPO_DIR/.git" ] && [ -n "$DOTFILES_BRANCH" ]; then
         echo "❌ Failed to switch to $DOTFILES_BRANCH"
     fi
     cd - > /dev/null
+
+    # Re-exec so the branch's install.sh runs instead of the one loaded in memory.
+    # exec replaces this process entirely — nothing after it executes.
+    exec "$REPO_DIR/install.sh"
 fi
 
 # Init (processes .chezmoi.toml.tmpl) and apply
