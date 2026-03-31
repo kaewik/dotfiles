@@ -1,9 +1,11 @@
 #!/bin/bash
 # hash: {{ lookPath "kubectl" }}
 
-# ensure PATH
 export PATH="$HOME/.local/bin:$PATH"
-eval "$(mise activate bash)"
+
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate bash)"
+fi
 
 mkdir -p ~/.zsh-custom/completions
 if command -v kubectl >/dev/null 2>&1; then
