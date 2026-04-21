@@ -25,12 +25,22 @@ if [ -d "$REPO_DIR/.git" ] && [ -n "$DOTFILES_BRANCH" ]; then
     fi
 fi
 
-# Symlink ~/.config to a custom path if requested.
-# Avoids cross-device rename errors when ~/.config is a separate bind mount.
-if [ -n "$DOTFILES_LINK_CONFIG" ]; then
-    echo "Linking ~/.config → $DOTFILES_LINK_CONFIG"
-    ln -sfn "$DOTFILES_LINK_CONFIG" "$HOME/.config"
-fi
+# Symlink XDG directories to custom paths if requested.
+# Avoids cross-device rename errors when these are separate bind mounts.
+for var_suffix in CONFIG CACHE DATA; do
+    var="DOTFILES_LINK_XDG_${var_suffix}"
+    target="${!var}"
+    if [ -n "$target" ]; then
+        case "$var_suffix" in
+            CONFIG) link="${XDG_CONFIG_HOME:-$HOME/.config}" ;;
+            CACHE)  link="${XDG_CACHE_HOME:-$HOME/.cache}" ;;
+            DATA)   link="${XDG_DATA_HOME:-$HOME/.local/share}" ;;
+        esac
+        echo "Linking $link → $target"
+        mkdir -p "$(dirname "$link")"
+        ln -sfn "$target" "$link"
+    fi
+done
 
 # Paths
 CHEZMOI_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/chezmoi"
