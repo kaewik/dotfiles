@@ -63,6 +63,9 @@ if [ "$REPO_DIR" != "$CHEZMOI_DIR" ]; then
     ln -sf "$REPO_DIR" "$CHEZMOI_DIR"
 fi
 
+# Remove stale chezmoi config and state so init regenerates from the template.
+rm -rf "${XDG_CONFIG_HOME:-$HOME/.config}/chezmoi"
+
 # Init (processes .chezmoi.toml.tmpl) and apply.
 # Without --source, chezmoi creates its source symlink at $XDG_DATA_HOME/chezmoi
 # (e.g. on a persistent mount), leaving a dangling symlink on the host pointing
