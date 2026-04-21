@@ -25,6 +25,13 @@ if [ -d "$REPO_DIR/.git" ] && [ -n "$DOTFILES_BRANCH" ]; then
     fi
 fi
 
+# Symlink ~/.config to a custom path if requested.
+# Avoids cross-device rename errors when ~/.config is a separate bind mount.
+if [ -n "$DOTFILES_LINK_CONFIG" ]; then
+    echo "Linking ~/.config → $DOTFILES_LINK_CONFIG"
+    ln -sfn "$DOTFILES_LINK_CONFIG" "$HOME/.config"
+fi
+
 # Paths
 CHEZMOI_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/chezmoi"
 BIN_DIR="$HOME/.local/bin"
