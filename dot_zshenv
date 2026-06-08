@@ -1,2 +1,5 @@
 # Ensure local binaries are preferred
 export PATH="$HOME/.local/bin:$PATH"
+
+# Setup up krew
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
