@@ -1,0 +1,14 @@
+[tools]
+"delta" = "latest"
+"fd" = "latest"
+"lazygit" = "latest"
+"neovim" = "stable"
+"ripgrep" = "latest"
+"tree-sitter" = "latest"
+"tmux" = "latest"
+
+[settings]
+jobs = 4
+
+[settings.aqua]
+github_attestations = false

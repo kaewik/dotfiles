@@ -1,0 +1,9 @@
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# path_helper and Homebrew may both reorder PATH after .zshenv runs.
+typeset -U path PATH
+path=("$HOME/.local/bin" "$HOME/.opencode/bin" $path)

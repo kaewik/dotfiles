@@ -1,6 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 # hash: {{ lookPath "chezmoi" }}
 
-mkdir -p ~/.zsh-custom/completions
-chezmoi completion zsh > ~/.zsh-custom/completions/_chezmoi
+if ! command -v chezmoi >/dev/null 2>&1; then
+    exit 0
+fi
+
+completion_dir="$HOME/.zsh-custom/completions"
+mkdir -p "$completion_dir"
+tmp_file="$(mktemp "$completion_dir/.chezmoi.XXXXXX")"
+trap 'rm -f "$tmp_file"' EXIT
+
+chezmoi completion zsh > "$tmp_file"
+mv "$tmp_file" "$completion_dir/_chezmoi"
+trap - EXIT
 echo "Chezmoi completions updated."

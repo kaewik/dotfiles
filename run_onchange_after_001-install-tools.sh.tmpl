@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+    echo "These dotfiles currently support macOS only." >&2
+    exit 1
+fi
+
+# Re-run when the global Mise tool list changes.
+# mise-config: {{ include "dot_config/mise/config.toml" | sha256sum }}
+
+if ! command -v brew >/dev/null 2>&1 && \
+   [[ ! -x /opt/homebrew/bin/brew && ! -x /usr/local/bin/brew ]]; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+elif ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew installation finished, but brew is not available." >&2
+    exit 1
+fi
+
+brew install cmake ninja gettext curl unzip git
+
+if ! command -v mise >/dev/null 2>&1; then
+    echo "Installing Mise..."
+    curl -fsSL https://mise.jdx.dev/install.sh | sh
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
+echo "Installing global tools via Mise..."
+mise install --cd / --yes

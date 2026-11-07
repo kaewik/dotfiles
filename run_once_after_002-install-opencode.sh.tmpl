@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+    echo "These dotfiles currently support macOS only." >&2
+    exit 1
+fi
+
+curl -fsSL https://opencode.ai/v2/install | bash -s -- --no-modify-path

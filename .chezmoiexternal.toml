@@ -1,4 +1,4 @@
-[".local/share/fonts/Hack"]
+["Library/Fonts/Hack"]
     type = "archive"
     url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"
     exact = true
