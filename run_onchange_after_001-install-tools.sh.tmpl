@@ -7,7 +7,7 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
 fi
 
 # Re-run when the global Mise tool list changes.
-# mise-config: {{ include "dot_config/mise/config.toml" | sha256sum }}
+# mise-config: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
 
 if ! command -v brew >/dev/null 2>&1 && \
    [[ ! -x /opt/homebrew/bin/brew && ! -x /usr/local/bin/brew ]]; then

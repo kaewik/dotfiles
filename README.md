@@ -20,6 +20,7 @@ for individual projects belong in those projects' own `mise.toml` files.
 - Neovim with LazyVim
 - OpenCode V2 via its native installer (no global Node.js required; update with `opencode upgrade`)
 - Mise-managed global CLI tools: Neovim, tmux, lazygit, ripgrep, fd, delta, and tree-sitter
+- Delta is pinned to 0.18.2 on Intel Macs because newer upstream releases no longer include Intel macOS binaries.
 - Hack Nerd Font in `~/Library/Fonts/Hack`
 
 ## Workflow

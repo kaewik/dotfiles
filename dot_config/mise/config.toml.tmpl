@@ -1,5 +1,9 @@
+{{- $deltaVersion := "latest" -}}
+{{- if eq .chezmoi.arch "amd64" -}}
+  {{- $deltaVersion = "0.18.2" -}}
+{{- end }}
 [tools]
-"delta" = "latest"
+"delta" = "{{ $deltaVersion }}"
 "fd" = "latest"
 "lazygit" = "latest"
 "neovim" = "stable"
