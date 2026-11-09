@@ -13,6 +13,7 @@ sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply YOUR_GITHUB_USERNAM
 The first apply installs Homebrew if needed, then Mise and the standalone OpenCode
 binary. Global CLI tools are listed in `~/.config/mise/config.toml`; tool versions
 for individual projects belong in those projects' own `mise.toml` files.
+Applying the dotfiles also sets the macOS appearance to dark; some apps may need a restart.
 
 ## What's included
 

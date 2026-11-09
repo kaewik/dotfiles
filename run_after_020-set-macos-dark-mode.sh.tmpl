@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+    echo "These dotfiles currently support macOS only." >&2
+    exit 1
+fi
+
+defaults write -g AppleInterfaceStyle -string Dark
